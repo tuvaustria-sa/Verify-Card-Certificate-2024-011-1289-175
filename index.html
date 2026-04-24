@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verified Card - Interactive Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card-container {
+            width: 400px;
+            height: 680px; /* কার্ডের হাইট সামান্য বাড়ানো হয়েছে যাতে তথ্যগুলো নিচে না নামে */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* --- নতুন টেক্সট এবং লোগো স্টাইল --- */
+        .verify-title {
+            position: absolute;
+            top: 65px;
+            left: 25px;
+            font-size: 19px;
+            font-weight: bold;
+            color: #444;
+            z-index: 10;
+        }
+
+        .card-logo {
+            position: absolute;
+            top: 100px;
+            right: 25px;
+            width: 90px;
+            z-index: 10;
+        }
+
+        .card-logo img {
+            width: 100%;
+            height: auto;
+        }
+.branch-image {
+    position: absolute;
+    top: 105px;         /* ওপর থেকে দূরত্ব */
+    left: 25px;         /* বাম দিক থেকে দূরত্ব */
+    width: 250px;       /* ইমেজটি কতটুকু চওড়া হবে */
+    z-index: 10;
+}
+
+.branch-image img {
+    width: 100%;        /* কন্টেইনার অনুযায়ী ইমেজ সাইজ হবে */
+    height: auto;
+}
+
+        .header-menu {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 55px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .menu-wrapper { position: relative; }
+        .btn-trigger { cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .left-icon { font-size: 22px; color: #333; }
+        .right-box { background: #333; padding: 8px 10px; border-radius: 4px; color: #fff; font-size: 16px; }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 45px;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 101;
+        }
+
+        .left-dropdown { left: 0; }
+        .right-dropdown { right: 0; }
+        .dropdown-content a { color: #333; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; border-bottom: 1px solid #eee; }
+        .dropdown-content a:hover { background-color: #f1f1f1; }
+        .show { display: block; }
+
+        .background-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://raw.githubusercontent.com/tuvaustria-sa/ORIGINAL-FILE/refs/heads/main/bg.jpg');
+            background-size: 100% 100%;
+            z-index: 1;
+        }
+
+        .photo-layer {
+            position: absolute; top: 180px; right: 25px; z-index: 10;
+        }
+
+        .user-photo {
+            width: 105px; height: 125px; border: 1px solid #999; object-fit: cover;
+        }
+
+        .info-layer {
+            position: absolute; 
+            top: 130px; /* এটিকে আরও উপরে তুলে সব তথ্য ফুটারের উপরে আনা হয়েছে */
+            left: 35px; 
+            width: 220px; 
+            z-index: 10; 
+            color: #000;
+        }
+
+        .card-id-header {
+            text-align: center; 
+            font-weight: bold; 
+            font-size: 16px; 
+            line-height: 1.2; 
+            color: #7a7a7a;
+            position: relative;
+            top: 10px;
+            left: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-row { 
+            margin-bottom: 8px; /* আপনার অরিজিনাল মার্জিন রাখা হয়েছে */
+            line-height: 1.1; 
+        }
+
+        .label { font-weight: 800; font-size: 12px; display: block; }
+        .value { 
+            font-weight: 500; 
+            font-size: 14px; /* আপনার অরিজিনাল ফন্ট সাইজ রাখা হয়েছে */
+            display: block; 
+            word-wrap: break-word; 
+            overflow-wrap: break-word;
+        }
+
+        .footer-layer {
+            position: absolute; bottom: 0; width: 100%; background-color: #000;
+            color: #fff; text-align: center; padding: 10px 0; font-weight: bold; z-index: 20;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="verify-title">Verify Card/Certificate</div>
+        <div class="card-logo">
+            <img src="https://raw.githubusercontent.com/tuvaustria-sa/ORIGINAL-FILE/refs/heads/main/logo.png" alt="Logo">
+        </div>
+
+        <div class="header-menu">
+            <div class="menu-wrapper">
+                <div class="btn-trigger left-icon" onclick="toggleLeftMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div id="leftDropdown" class="dropdown-content left-dropdown">
+                    <a href="https://tuvaustria.sa/" target="_blank"><i class="fa-solid fa-globe"></i> Visit Website</a>
+                </div>
+            </div>
+
+            <div class="menu-wrapper">
+                <div class="btn-trigger right-box" onclick="toggleRightMenu()">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <div id="rightDropdown" class="dropdown-content right-dropdown">
+                    <a href="mailto:info@tuvaustria.sa"><i class="fa-solid fa-envelope"></i> Send Email</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="background-layer"></div>
+
+        <div class="info-layer">
+            <div class="card-id-header">
+                CARD NO: 2024-011-1289<br>175/027
+            </div>
+
+            <div class="detail-row"><span class="label">NAME:</span><span class="value">AMENO ABDLKALK</span></div>
+            <div class="detail-row"><span class="label">IQAMA/ID NO:</span><span class="value">2156538130</span></div>
+            <div class="detail-row"><span class="label">ISSUE DATE:</span><span class="value">24-April-2026</span></div>
+            <div class="detail-row"><span class="label">EXPIRY DATE:</span><span class="value">22-December-2026</span></div>
+            <div class="detail-row"><span class="label">COMPANY:</span><span class="value">JUFFALY</span></div>
+            <div class="detail-row"><span class="label">MODEL:</span><span class="value">N/A</span></div>
+            <div class="detail-row"><span class="label">REF/JOB NO:</span><span class="value">2024-011-1289-175</span></div>
+            <div class="detail-row"><span class="label">ISSUANCE NO:</span><span class="value">01</span></div>
+            <div class="detail-row"><span class="label">CERTIFICATITION:</span><span class="value">WELDER 6G</span></div>
+            <div class="detail-row"><span class="label">ASSESSOR:</span><span class="value">MR. Farhan Khan</span></div>
+            <div class="detail-row"><span class="label">CR NUMBER:</span><span class="value">1010665690</span></div>
+        </div>
+
+        <div class="photo-layer">
+            <img src="photo.jpg" alt="Profile" class="user-photo">
+        </div>
+<div class="branch-image">
+    <img src="https://raw.githubusercontent.com/tuvaustria-sa/ORIGINAL-FILE/refs/heads/main/branch-text.jpg" alt="Branch of TUV Austria">
+</div>
+
+        <div class="footer-layer">2023 @ TUV</div>
+    </div>
+
+    <script>
+        function toggleLeftMenu() {
+            document.getElementById("leftDropdown").classList.toggle("show");
+            document.getElementById("rightDropdown").classList.remove("show");
+        }
+        function toggleRightMenu() {
+            document.getElementById("rightDropdown").classList.toggle("show");
+            document.getElementById("leftDropdown").classList.remove("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.menu-wrapper')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].classList.contains('show')) dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
